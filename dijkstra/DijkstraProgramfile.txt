@@ -1,0 +1,137 @@
+//Capture Castle ->Present in Hackerearth(came in challenge Webengage in 2013)-> written in java
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+class TestClass {
+    public static void main(String args[] ) throws Exception {      
+        //This is a weighted graph with +ve edges so Dijkstra algorithm will be used
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        int t=Integer.parseInt(br.readLine());
+        int M,N,x,y,time;
+        String str[];
+        while(t>0)
+        {
+            str=br.readLine().trim().split(" ");
+            M=Integer.parseInt(str[0]);
+            N=Integer.parseInt(str[1]);
+            int adj[][]=new int[M][N];
+            long distance[][]=new long[M][N];
+            //initialization of adjacency matrix done
+            for(int i=0;i<M;i++)
+            {
+                str=br.readLine().trim().split(" ");
+                for(int j=0;j<N;j++)
+                {
+                    adj[i][j]=Integer.parseInt(str[j]);
+                    distance[i][j]=Integer.MAX_VALUE;
+                }
+            }
+            str=br.readLine().trim().split(" ");
+            x=Integer.parseInt(str[0])-1;
+            y=Integer.parseInt(str[1])-1;
+            time=Integer.parseInt(str[2]);
+            long ans=Dijkstra(adj,distance,x,y,time,M,N);
+            if(ans==-1)
+                System.out.println("NO");
+            else
+                System.out.println("YES\n"+ans);
+            t--;
+        }
+
+    }
+    public static long Dijkstra(int adj[][],long distance[][],int x,int y,int time,int M,int N)
+    {
+            //top,down,left,right motion is allowed
+            //calculate shortest distance
+            
+            PriorityQueue<Node> q=new PriorityQueue<Node>();
+            q.add(new Node(0,0,adj[0][0]));
+            distance[0][0]=adj[0][0];
+           // Node n1;
+            int i,j;
+            i=j=0;
+            while(q.size()>0)
+            {
+                // System.out.println("Element in q are before polling "+q);
+                // for(Node a:q)
+                // {
+                //     System.out.println(a.i+" "+a.j+" "+a.cost);
+                // }
+                Node n1=q.poll();
+                i=n1.i;
+                j=n1.j;
+             //   System.out.println(n1.i+" "+n1.j+" "+n1.cost+" the current node");
+                        if((i-1)>=0 && (adj[i-1][j]+distance[i][j])<(distance[i-1][j]) )
+                        {
+                            distance[i-1][j]=adj[i-1][j]+distance[i][j];
+            //                System.out.println(i-1+" "+j+" "+distance[i-1][j]+" traversing up");
+                            q.add(new Node(i-1,j,distance[i-1][j]));
+                        }
+                        //move down
+                        if((i+1)<M && (adj[i+1][j]+distance[i][j])<(distance[i+1][j]) )
+                        {
+                            distance[i+1][j]=adj[i+1][j]+distance[i][j];
+              //              System.out.println(i+1+" "+j+" "+distance[i+1][j]+" traversing down");
+                            q.add(new Node(i+1,j,distance[i+1][j]));
+                        }
+                        //move left
+                        if((j-1)>=0 && (adj[i][j-1]+distance[i][j])<(distance[i][j-1]) )
+                        {
+                            distance[i][j-1]=adj[i][j-1]+distance[i][j];
+                //            System.out.println(i+" "+(j-1)+" "+distance[i][j-1]+" traversing left");
+                            q.add(new Node(i,j-1,distance[i][j-1]));
+                        }
+                        //move right
+                         if((j+1)<N && (adj[i][j+1]+distance[i][j])<(distance[i][j+1]) )
+                        {
+                            distance[i][j+1]=adj[i][j+1]+distance[i][j];
+         //                   System.out.println(i+" "+(j+1)+" "+distance[i][j+1]+" traversing right");
+                            q.add(new Node(i,j+1,distance[i][j+1]));
+                        }
+
+            } 
+  //          System.out.println(time+" is time and distance[x][y] is "+distance[x][y]);
+            if(time-distance[x][y]<0)
+            {
+                return -1;
+            }       
+            return time-distance[x][y];
+    }
+    
+}
+class Node implements Comparable<Node>
+    {
+        int i,j;
+        long cost;
+        public Node()
+        {
+            i=0;
+            j=0;
+            cost=0;
+        }
+        public Node(int i,int j,long cost)
+        {
+            this.i=i;
+            this.j=j;
+            this.cost=cost;
+        }
+        public int compareTo(Node n)
+        {
+            return Long.compare(this.cost,n.cost);
+        }
+        // @Override
+        // public int compare(Node n1, Node n2)
+        // {
+        //     if(n1.cost > n2.cost)
+        //     {
+        //         return 1;
+        //     }
+        //     else if(n1.cost < n2.cost)
+        //     {
+        //         return -1;
+        //     }
+        //     return 0;
+        // }
+    }
+
+
