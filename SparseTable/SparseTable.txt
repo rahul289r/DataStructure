@@ -1,0 +1,113 @@
+class SparseTable {
+	static int sparseTable[][];
+	static int sparseIndex[][];
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//send the function to send the sparse table 
+		//send the depth array to the sparse table making function. Write the api to send the  array then do minimum range query to return the index
+		int a[]= {4,2,3,7,1,5,3,3,9,6,7,-1,4};//{0,1,2,1,0,1,2,3,2,1,2,1,0};
+		
+		
+		buildSparseTable(a);
+		
+		int index=giveIndexRangeQuery(12,12);
+		System.out.println("The index is "+index);
+		printSparseTable();
+		printSparseIndex();
+//		for(int i=0;i<n;i++)
+//		{
+//			if
+//		}
+
+	}
+	public static int giveIndexRangeQuery(int l,int r)
+	{
+			int length=r-l+1;
+			int p=(int)Math.floor(Math.log(length)/Math.log(2));
+			//int min=0;
+			if((r-(1<<p)+1)<=sparseTable[0].length)
+			{
+			//	min=Math.min(sparseTable[p][l],sparseTable[p][r-(1<<p)+1]);
+				return sparseTable[p][l]<sparseTable[p][r-(1<<p)+1]?sparseIndex[p][l]:sparseIndex[p][r-(1<<p)+1];
+			}
+			else
+			{
+				//min=sparseTable[p][l];
+				return sparseIndex[p][l];
+			}
+	}
+	
+	/*
+	 * @api->Api has been written to build sparse tables for functions which are both associate function and overlap friendly
+	 * */
+	public static void buildSparseTable(int a[])
+	{
+		int l=a.length;
+		int p=(int)Math.floor(Math.log(l)/Math.log(2));
+		//int p1=(int)p;
+		sparseTable=new int[p+1][l];
+		sparseIndex=new int[p+1][l];
+		for(int i=0;i<l;i++)
+		{
+			sparseTable[0][i]=a[i];
+			sparseIndex[0][i]=i;
+		}
+		for(int i=1;i<=p;i++)
+		{
+			
+//			Case 1-> my assumption.
+//			for(int j=0;j<l;j++)
+//			{
+//				sparseTable[i][j]=Integer.MAX_VALUE;
+//				sparseIndex[i][j]=-1;
+//				if((j+(1<<(i-1)))<l)
+//				{
+//					sparseTable[i][j]=Math.min(sparseTable[i-1][j], sparseTable[i-1][j+(1<<(i-1))]);
+//					sparseIndex[i][j]=sparseTable[i-1][j]<sparseTable[i-1][j+(1<<(i-1))]?sparseIndex[i-1][j]:sparseIndex[i-1][j+(1<<(i-1))];
+//				//	System.out.println(sparseTable[i][j]+" is final value.The value of i is "+i+" and j is "+j);
+//				}
+//				//it is assumed that range query will not go in that index otherwise it will give wrong index	
+//			}
+			//Case 2-> William Fiset Algorithm
+			for(int j=0;j+(1<<i)<=l;j++)
+			{
+				sparseTable[i][j]=Math.min(sparseTable[i-1][j], sparseTable[i-1][j+(1<<(i-1))]);
+				sparseIndex[i][j]=sparseTable[i-1][j]<sparseTable[i-1][j+(1<<(i-1))]?sparseIndex[i-1][j]:sparseIndex[i-1][j+(1<<(i-1))];
+			}
+		}
+		
+		
+		
+		
+		
+		
+		//since we are m
+	//	System.out.println(p);
+		
+	}
+	public static void printSparseTable()
+	{
+		System.out.println("SparseTable for data is as follows");
+		for(int i=0;i<sparseTable.length;i++)
+		{
+			for(int j=0;j<sparseTable[0].length;j++)
+			{
+				System.out.print(sparseTable[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+	public static void printSparseIndex()
+	{
+		System.out.println("SparseIndex for data is as follows");
+		for(int i=0;i<sparseIndex.length;i++)
+		{
+			for(int j=0;j<sparseIndex[0].length;j++)
+			{
+				System.out.print(sparseIndex[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+
+}
