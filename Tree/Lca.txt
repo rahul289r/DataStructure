@@ -1,0 +1,160 @@
+import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+class LCA {
+    static ArrayList<ArrayList<Integer>> adjList;
+    static Node node[];
+    static List<Integer> eulerianPath;
+    static List<Integer> eulerianDepth;
+    static int sparseTable[][];
+	static int sparseIndex[][];
+    public static void main(String args[] ) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        int n=Integer.parseInt(br.readLine());
+        node=new Node[n];
+        adjList=new ArrayList<ArrayList<Integer>>();
+        for(int i=0;i<n;i++)
+        {
+            node[i]=new Node(""+i);
+            adjList.add(new ArrayList<Integer>(i));
+        }
+        String str[]=br.readLine().trim().split(" ");
+        for(int i=1;i<n;i++)
+        {
+            int edge=Integer.parseInt(str[i-1]);
+            adjList.get(edge).add(i);
+        }
+        int M=Integer.parseInt(br.readLine());
+        int U[]=new int[M];
+        str=br.readLine().split(" ");
+        for(int i=0;i<M;i++)
+        {
+            U[i]=Integer.parseInt(str[i]);
+        }
+        //do dfs
+        if(M==1)
+        {
+            System.out.println(U[0]);
+        }
+        else{
+            dfs();
+            buildSparseTable();
+            int lca=U[0];
+            for(int i=1;i<U.length;i++)
+            {
+                int left=Math.min(node[lca].last,node[U[i]].last);
+                int right=Math.max(node[lca].last,node[U[i]].last);
+                lca=giveIndexRangeQuery(left,right) ;
+                 lca=eulerianPath.get(lca);
+            }
+             System.out.println(lca);
+        }
+    }
+
+    public static void buildSparseTable()
+    {
+        int l=eulerianDepth.size();
+		int p=(int)Math.floor(Math.log(l)/Math.log(2));
+		sparseTable=new int[p+1][l];
+		sparseIndex=new int[p+1][l];
+		for(int i=0;i<l;i++)
+		{
+			sparseTable[0][i]=eulerianDepth.get(i);
+			sparseIndex[0][i]=i;
+		}
+		for(int i=1;i<=p;i++)
+		{
+			
+			for(int j=0;j+(1<<i)<=l;j++)
+			{
+				sparseTable[i][j]=Math.min(sparseTable[i-1][j], sparseTable[i-1][j+(1<<(i-1))]);
+				sparseIndex[i][j]=sparseTable[i-1][j]<sparseTable[i-1][j+(1<<(i-1))]?sparseIndex[i-1][j]:sparseIndex[i-1][j+(1<<(i-1))];
+			}
+        }
+    }
+    	public static int giveIndexRangeQuery(int l,int r)
+	{
+			int length=r-l+1;
+			int p=(int)Math.floor(Math.log(length)/Math.log(2));
+			if((r-(1<<p)+1)<=sparseTable[0].length)
+			{
+				return sparseTable[p][l]<sparseTable[p][r-(1<<p)+1]?sparseIndex[p][l]:sparseIndex[p][r-(1<<p)+1];
+			}
+			else
+			{
+				return sparseIndex[p][l];
+			}
+	}
+    public static void dfs()
+    {
+        eulerianPath=new ArrayList<Integer>();
+        eulerianDepth=new ArrayList<Integer>();
+        Stack<Integer> stack=new Stack<Integer>();
+        stack.push(0);
+        node[0].visited=true;
+        eulerianPath.add(0);
+        eulerianDepth.add(0);
+        int k=0;
+        int currentNode=0;
+        while(!stack.isEmpty())
+        {
+            boolean adjacentVertex=false;
+            currentNode=stack.peek();
+            int l=0;
+            int o=eulerianPath.size()-1;
+            for(int edges:adjList.get(currentNode))
+            {
+                o=eulerianPath.size()-1;
+                if(!node[edges].visited)
+                    {
+                        node[edges].visited=true;
+                        node[edges].depth=++k;
+                        
+                        eulerianPath.add(edges);
+                        eulerianDepth.add(k);
+                        node[edges].last=eulerianPath.size()-1;
+                        stack.add(edges);
+                        adjacentVertex=true;
+                        break;
+                    }
+                    else if(l==0 && (currentNode!=eulerianPath.get(o)))
+                    {
+                        l=1;
+                        
+                         eulerianPath.add(currentNode);
+
+                        eulerianDepth.add(k);
+                        node[currentNode].last=eulerianPath.size()-1;
+                    }
+                    
+            }
+            if(!adjacentVertex)
+            {
+                o=eulerianPath.size()-1;
+                if(adjList.get(currentNode).size()>0 && (currentNode)!=(eulerianPath.get(o)))
+                {
+                    
+                    eulerianPath.add(currentNode);
+                    eulerianDepth.add(k);
+                    node[currentNode].last=eulerianPath.size()-1;
+                    
+                }
+                currentNode=stack.pop();
+                k--;
+            }
+        }
+    }
+
+}
+class Node{
+    String label;
+    int depth,last;
+    boolean visited;
+    public Node(String label)
+    {
+        this.label=label;
+        visited=false;
+    }
+
+}
