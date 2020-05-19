@@ -1,0 +1,78 @@
+/* IMPORTANT: Multiple classes and nested static classes are supported */
+
+/*
+ * uncomment this if you want to read input.
+//imports for BufferedReader
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+//import for Scanner and other utility classes
+import java.util.*;
+*/
+
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+import java.io.*;
+import java.text.DecimalFormat;
+class SkippingStones {
+    public static void main(String args[] ) throws Exception {
+        /* Sample code to perform I/O:
+         * Use either of these methods for input
+
+        //BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String name = br.readLine();                // Reading input from STDIN
+        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+
+        //Scanner
+        Scanner s = new Scanner(System.in);
+        String name = s.nextLine();                 // Reading input from STDIN
+        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+
+        */
+
+        // Write your code here
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        String input[]=br.readLine().split(" ");
+        int n=Integer.parseInt(input[0]);
+        int L=Integer.parseInt(input[1]);
+        int D=Integer.parseInt(input[2]);
+        float p[]=new float[n+2];
+        float pf[]=new float[n+2];
+        int dis[]=new int[n+2];
+        dis[0]=0;
+        dis[n+1]=D;
+        p[0]=p[n+1]=(float)1.0;
+        pf[0]=(float)1.0;
+        input=br.readLine().split(" ");
+        for(int i=0;i<n;i++)
+        {
+            p[i+1]=Float.parseFloat(input[i]);
+        }
+        input=br.readLine().split(" ");
+        for(int i=0;i<n;i++)
+        {
+            dis[i+1]=Integer.parseInt(input[i]);
+        }
+        for(int i=0;i<=n;i++)
+        {
+            int j=i+1;
+            while(j<=(n+1) && (dis[j]-dis[i])<=L)
+            {
+                pf[j]=Math.max(pf[i]*p[j],pf[j]);
+                j++;
+            }
+
+        }
+        if(pf[n+1]<0.0)
+        {
+            System.out.println("IMPOSSIBLE");
+        }
+        else
+        {
+            DecimalFormat d=new DecimalFormat("0.000000");
+            //float f=Float.getValue();
+         //   System.out.println(pf[n+1]);
+            System.out.println(d.format(pf[n+1]));
+        }
+    }
+}
