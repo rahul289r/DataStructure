@@ -1,0 +1,7 @@
+https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/visiting-islands/description/?layout=old
+https://www.hackerearth.com/challenges/hiring/freshdesk-hiring-challenge/problems/
+
+I was unable to solve this question. For 2 weeks I kept on trying to solve this question . So I will study graph topics in depth and revisit 
+this question after 1 month
+Today date->27-05-2020
+Target Revisit date->27-06-2020
