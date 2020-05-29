@@ -1,0 +1,60 @@
+Takeaway 1:-
+Observation result:-
+StringTokenizer vs split vs Scanner
+
+I realize it's an answer to an old question, but if I need to split a huge text stream into tokens on the fly, 
+isn't StringTokenizer still my best bet because String.split() will simply run out of memory?
+
+Split is slow, but not as slow as Scanner. StringTokenizer is faster than split. However, I found that I could obtain double the speed, by trading some flexibility, to get a speed-boost, which I did at JFastParser https://github.com/hughperkins/jfastparser
+
+Testing on a string containing one million doubles:
+
+Scanner: 10642 ms
+Split: 715 ms
+StringTokenizer: 544ms
+JFastParser: 290ms
+
+
+Takeaway 2:-
+Use BigInteger instead of long if the value is too big for long
+
+Takeaway 3:-
+Answer is there in question
+
+Takeaway 4:-
+Unable to solve mathematical problems leave it and come back on it after 1 month:-
+
+
+Takeaway 5:-
+See the logic behind solving mathematics problem and try to build your own logic
+
+Takeway 6:-
+Read the question fully.Think of possible scenerios only . Then read the question again to get the negative cases
+
+Takeaway 7:-
+In order to format number in specific way use following.
+DecimalFormat df = new DecimalFormat("0.000000000");
+double num=5/7;
+df.format();
+
+Takeaway 8:-
+See bhanu pratap video on selenium
+See william fiset video on datastructures(55 videos)
+
+
+
+Love Babbar:-
+Things to study according to him:-
+Things to study->
+Part 1->
+Type 1->
+Ad-hoc approach , brute-force approach,
+Type 2->
+Formula based,big integer
+exponentiation,modular arithmetic
+pigeon hole principle exclusive inclusive
+expectation , variation , bernouli trial's 
+Number series
+Binomial coefficient
+See this link:-
+https://practice.geeksforgeeks.org/courses/Placement-100?utm_source=geeksforgeeks&utm_medium=banner&utm_campaign=gfg-rt-P100-24May
