@@ -1,0 +1,25 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+import java.math.BigInteger;
+class GFG {
+	public static void main (String[] args) throws Exception{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		int t=Integer.parseInt(br.readLine());
+		String str="";
+		BigInteger a=BigInteger.ONE;
+		while(t>0)
+		{
+		    str=br.readLine();
+		    BigInteger b=new BigInteger(str);
+		    a=BigInteger.ONE;
+		    for(int i=1;i<=Integer.parseInt(str);i++)
+		    {
+		        a=a.multiply(b);
+		        b=b.subtract(new BigInteger("1"));
+		    }
+		    System.out.println(a);
+		    t--;
+		}
+	}
+}
