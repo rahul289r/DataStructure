@@ -1,0 +1,36 @@
+Takeaway from BigInteger
+->Which package->
+import java.math.BigInteger;
+->Applications->
+1.BigInteger class is used for mathematical operation which involves very big 
+integer calculations that are outside the limit of all available primitive 
+data types.
+
+->Range
+BigInteger must support values in the range -2^Integer.MAX_VALUE (exclusive)
+ to +2^Integer.MAX_VALUE (exclusive) 
+ and may support values outside of that range.
+ 
+->Constants
+static BigInteger ONE  -> The BigInteger constant one.
+static BigInteger TEN  -> The BigInteger constant ten.
+static BigInteger ZERO -> The BigInteger constant zero.
+
+ 
+->operations(behaviour)->
+initialization=>
+	String str = “123456789”;
+	BigInteger C = A.add(new BigInteger(str));
+	int val  = 123456789;
+addition=>
+	BigInteger C = A.add(BigInteger.valueOf(val)); 
+BigInteger multiply(BigInteger val): This method returns a BigInteger whose value is (this * val).
+BigInteger divide(BigInteger val): This method returns a BigInteger whose value is (this / val).
+BigInteger[] divideAndRemainder(BigInteger val): This method returns an array of two BigIntegers 
+containing (this / val) followed by (this % val).
+
+
+
+Source website:-
+https://www.geeksforgeeks.org/biginteger-class-in-java/
+https://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html
