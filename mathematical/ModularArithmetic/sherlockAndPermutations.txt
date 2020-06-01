@@ -1,0 +1,102 @@
+import java.io.*;
+import java.math.*;
+import java.text.*;
+import java.util.*;
+import java.util.regex.*;
+public class Solution {
+    static int mod=(int)Math.pow(10,9)+7;
+    static BigInteger mod1=new BigInteger(""+mod);
+    static int solve(int n, int m) {
+            long fact1=factorial(n+m-1);
+            long fact2=factorial(n);
+            long fact3=factorial(m-1);
+            long bin=binaryExpon(fact2*fact3,mod-2);
+            return (int)((bin*fact1)%mod);
+ }
+    public static long binaryExpon(long n,int power)
+    {
+        if(power==0)
+            return 1;
+        if(power==1)
+            return n%mod;
+        long a=binaryExpon(n,power/2);
+        a=(a*a)%mod;
+        if(power%2==1)
+            a=(a*(n%mod))%mod;
+        return a;
+    }
+    public static BigInteger  binaryExponential(BigInteger n,int power)
+    {
+        if(power==0)
+            {
+                return new BigInteger(""+1);
+            }
+        if(power==1)
+        {
+            return n.mod(mod1);
+            //return n;
+        }
+        BigInteger a=binaryExponential(n,power/2);
+       // System.out.print(a+",");
+        a=a.mod(mod1);
+        //a=a%mod;
+       // System.out.print(a+",");
+        a=a.multiply(a);
+     //   System.out.print(a+",");
+        a=a.mod(mod1);
+     //   System.out.print(a+",");
+        if(power%2==0)
+        {
+           // System.out.println(((a%mod)*(a%mod))%(mod)+" and power is "+power);
+         //   System.out.println(a.mod(mod1)+" and power is "+power);
+           // return ((a%mod)*(a%mod))%(mod);
+           return a;
+        }
+        else
+        {
+            //System.out.println(((a%mod)*(a%mod)*n)%(mod) +" and power is "+power);
+           // return ((a%mod)*(a%mod)*n)%(mod);
+      //     System.out.println((a.multiply(n)).mod(mod1)+" and power is "+power);
+           return ((a.multiply(n.mod(mod1))).mod(mod1));
+        }
+
+    }
+    public static long factorial(long f)
+    {
+        if(f==0)
+            return (long)1;
+        long fact=1;
+        for(long i=f;i>1;i--)
+        {
+            fact*=i;
+            fact%=mod;
+        }
+        return fact;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int t = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            String[] nm = scanner.nextLine().split(" ");
+
+            int n = Integer.parseInt(nm[0]);
+
+            int m = Integer.parseInt(nm[1]);
+
+            int result = solve(n, m);
+           // System.out.println(result);
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
