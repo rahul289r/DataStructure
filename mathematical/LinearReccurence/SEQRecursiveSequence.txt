@@ -1,0 +1,147 @@
+package MathPractise;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class LinearRecursion
+{
+    static long finitial[][];
+    static long ffinal[][];
+    //Transpose matrix
+    static long linear[][];
+    static int mod=1000000000;
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		int t=Integer.parseInt(br.readLine().trim());
+		int k,n;
+		String str[];
+		while(t>0)
+		{
+		    k=Integer.parseInt(br.readLine().trim());
+		    finitial=new long[k][1];
+		    linear=new long[k][k];
+		    ffinal=new long[k][1];
+		    long c[]=new long[k];
+		    str=br.readLine().split(" ");
+		    for(int i=0;i<k;i++)
+		    {
+		        finitial[i][0]=Integer.parseInt(str[i]);
+		    }
+		    str=br.readLine().split(" ");
+		    
+		    for(int i=0;i<k;i++)
+		    {
+		        if(i==(k-1))
+		        {
+		            for(int j=0;j<k;j++)
+		            {
+		            	c[j]=Long.parseLong(str[j]);
+		               // linear[i][j]=Long.parseLong(str[j]);
+		                //c[j]=linear[i][j];
+		            }
+		            for(int j=0;j<k;j++)
+		            {
+		            	//c[j]=Long.parseLong(str[j]);
+		               linear[i][j]=c[k-j-1];
+		                //c[j]=linear[i][j];
+		            }
+		        }
+		        else
+		        {
+		            linear[i][i+1]=1;
+		        }
+		    }
+		    //printTransposeMatrix();
+		    n=Integer.parseInt(br.readLine().trim());
+		    if(n<=k)
+		    {
+		    	System.out.println(finitial[n-1][0]);
+		    }
+		    else
+		    {
+		    	//as previous terms has been 
+		    	linear=exponential(linear,n-1);
+		    	// printTransposeMatrix();
+		    	ffinal=multi(linear,finitial);
+		    	//System.out.println("final matrix is");
+		    	//printTransposeMatrix1(ffinal,n-k+1);
+//		    	long result=0;
+//		    	for(int i=0;i<k;i++)
+//		    	{
+//		    		System.out.println(ffinal[i][0]+" and "+(k-i-1));
+//		    		result=(result+ffinal[i][0]*c[k-i-1])%mod;
+//		    	}
+		    	
+		    	System.out.println(ffinal[0][0]);
+		    }
+		    
+		   
+		    
+		    
+		    
+		    t--;
+		}
+	}
+	
+	public static long[][] exponential(long[][] linear1,int power)
+	{
+		if(power==0)
+			return new long[linear1.length][linear1[0].length];
+		if( power==1 )
+			return linear1;
+		else 
+		{
+			long linear2[][]=exponential(linear1, power/2);
+			linear2=multi(linear2,linear2);
+		//	System.out.println("power is "+power);
+		//	printTransposeMatrix1(linear2,power);
+			if(power%2==1)
+				linear2=multi(linear2,linear1);
+		//	printTransposeMatrix1(linear2,power);
+			return linear2;
+		}
+	}
+	public static long[][] multi(long[][] linear1,long[][] linear2)
+	{
+		long linear3[][]=new long[linear1.length][linear2[0].length];
+		for(int i=0;i<linear3.length;i++)
+		{
+			for(int j=0;j<linear3[0].length;j++)
+			{
+				//number of columns of first should be equal to number of rows of second matrix
+				for(int k=0;k<linear1[0].length;k++)
+				{
+					linear3[i][j]=(linear3[i][j]+linear1[i][k]*linear2[k][j])%mod;
+				}
+			}
+		}
+		return linear3;
+	}
+	public static void printTransposeMatrix()
+	{
+		System.out.println("The transpose matrix is \n");
+		for(int i=0;i<linear.length;i++)
+		{
+			for(int j=0;j<linear[0].length;j++)
+			{
+				System.out.print(linear[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+	public static void printTransposeMatrix1(long linear2[][],int power)
+	{
+		System.out.println(power+" is power and The matrix is \n");
+		for(int i=0;i<linear2.length;i++)
+		{
+			for(int j=0;j<linear2[0].length;j++)
+			{
+				System.out.print(linear2[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+}
