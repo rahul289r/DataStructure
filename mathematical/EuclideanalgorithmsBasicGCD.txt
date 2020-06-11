@@ -1,0 +1,22 @@
+import java.io.*;
+import java.util.*;
+import java.io.*;
+public class Solution {
+
+    public static void main(String[] args)throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        String str[]=br.readLine().split(" ");
+        int a=Integer.parseInt(str[0]);
+        int b=Integer.parseInt(str[1]);
+        int result=gcd(Math.min(a,b),Math.max(a,b));
+        System.out.println(result);
+    }
+    public static int gcd(int a,int b)
+    {
+        if(a==0)
+            return b;
+        else
+            return gcd(b%a,a);
+    }
+}
