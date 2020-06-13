@@ -1,0 +1,109 @@
+import java.io.*;
+import java.util.*;
+public class EucledianExtendedGcd {
+	//static int x,y;
+	public static void main(String args[])throws Exception
+	{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		String str[];
+		int a,b;
+		try {
+			while(true)
+			{
+				str=br.readLine().split(" ");
+				a=Integer.parseInt(str[0]);
+				b=Integer.parseInt(str[1]);
+				int x,y;
+				x=y=1;
+//				int gcd=gcd(Math.min(a,b),Math.max(a, b),x,y);
+//				System.out.println(Math.min(x, y)+" "+Math.max(x, y)+" "+gcd);
+//				Parameter p=new Parameter();
+//				gcd=gcdExtendedRecursive(Math.max(a,b),Math.min(a,b),p);
+//				System.out.println(Math.min(p.x, p.y)+" "+Math.max(p.x, p.y)+" "+gcd);
+				Parameter p1=gcdExtendedIterative(Math.max(a,b),Math.min(a,b));
+				System.out.println(Math.min(p1.x, p1.y)+" "+Math.max(p1.x, p1.y)+" "+p1.gcd);		
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	public static Parameter gcdExtendedIterative(int a,int b)
+	{
+		Parameter p1=new Parameter();
+		Stack<Parameter> s1=new Stack<Parameter>();
+		s1.push(new Parameter(a,b));
+		int x=0,y=0;
+		while(!s1.isEmpty())
+		{
+			if(b==0)
+			{
+				int x1=1,y1=0;
+				s1.pop();
+				while(!s1.isEmpty())
+				{
+					p1=s1.pop();
+					x=y1;
+					y=x1-y1*(p1.x/p1.y);
+					x1=x;
+					y1=y;
+				}
+				p1.x=x;
+				p1.y=y;
+				p1.gcd=a;
+				
+			}
+			else
+			{
+				s1.push(new Parameter(b,a%b));
+				int tmp=b;
+				b=a%b;
+				a=tmp;
+			}
+		}
+		return p1;
+	}
+	public static int gcd(int a,int b,int x,int y)//Wrong api 
+	{
+		if(a==0)
+		{
+			x=1;
+			y=0;
+			return b;
+		}
+		int x1=0,y1=0;
+		int gcd=gcd(b%a,a,x,y);
+		y=x1-y1*(b/a);
+		x=y1;
+		return gcd;
+	}
+	public static int gcdExtendedRecursive(int a,int b, Parameter p)
+	{
+		if(b==0)
+		{
+			p.x=1;
+			p.y=0;
+			return a;
+		}
+		Parameter p1=new Parameter();
+		int gcd=gcdExtendedRecursive(b,a%b, p1);
+		p.x=p1.y;
+		p.y=p1.x-p1.y*(a/b);
+		return gcd;
+	}
+
+}
+ class Parameter
+{
+	int x, y,gcd;
+	public Parameter()
+	{
+		x=y=gcd=0;
+	}
+	public Parameter(int x,int y)
+	{
+		this.x=x;
+		this.y=y;
+	}
+}
