@@ -1,0 +1,95 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    public static int gcdExtendedRecursive(int a,int b, Parameter p)
+	{
+		if(b==0)
+		{
+			p.x=1;
+			p.y=0;
+			return a;
+		}
+		Parameter p1=new Parameter();
+		int gcd=gcdExtendedRecursive(b,a%b, p1);
+		p.x=p1.y;
+		p.y=p1.x-p1.y*(a/b);
+		return gcd;
+	}
+	public static void main (String[] args)throws Exception {
+		//code
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		int t=Integer.parseInt(br.readLine());
+		String str[];
+		int a,b,n;
+		while(t>0)
+		{
+		    str=br.readLine().split(" ");
+		    a=Integer.parseInt(str[0]);
+		    b=Integer.parseInt(str[1]);
+		    n=Integer.parseInt(str[2]);
+		    Parameter p=new Parameter();
+		    int gcd=gcdExtendedRecursive(a,b,p);//Math.max(a,b),Math.min(a,b),p);
+		 //   System.out.println(gcd+" is gcd and x is "+p.x+" and y is "+p.y);
+		    p.x=p.x*(n/gcd);
+		    p.y=p.y*(n/gcd);
+		   // System.out.println(gcd+" is gcd and x is "+p.x+" and y is "+p.y);
+		    if(n%gcd==0)
+		    {
+		      if(p.x<0)
+              {
+                while(true)
+                {
+                    if(p.x>0)
+                        break;
+                    else
+                    {
+                        p.x+=(b/gcd);
+                        p.y-=(a/gcd);
+                    }
+                }
+              }
+              if(p.y<0)
+              {
+                while(true)
+                {
+                    if(p.y>0)
+                        break;
+                    else
+                    {
+                        p.x-=(b/gcd);
+                        p.y+=(a/gcd);
+                    }
+                }
+              }
+              if(p.x>=0 && p.y>=0)
+		        System.out.println(p.x+" "+p.y);
+		      else
+		        System.out.println("No solution");
+		    }
+		    else
+		    {
+		        System.out.println("No solution");
+		    }
+		    
+		    t--;
+		}
+		
+	}
+}
+class Parameter
+{
+	int x, y,gcd;
+	public Parameter()
+	{
+		x=y=gcd=0;
+	}
+	public Parameter(int x,int y)
+	{
+		this.x=x;
+		this.y=y;
+	}
+}
