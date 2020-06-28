@@ -1,1 +1,106 @@
 
+package MathPractise;
+import java.io.*;
+import java.util.*;
+public class BoringFact
+{
+	public static void main(String args[])throws Exception
+	{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		int t=Integer.parseInt(br.readLine());
+		long n,p,ans;
+		String str[];
+		while(t>0)
+		{
+			str=br.readLine().split(" ");
+			n=Long.parseLong(str[0]);
+			p=Long.parseLong(str[1]);
+			//If n will be greater than or equal to p then n will have factor of p
+			if(n>=p)
+				System.out.println(0);
+			else
+			{
+				ans=1;
+				//wilson theorom and fermat's little theorom.
+				for(long i=n+1;i<p;i++)
+				{
+					ans=(ans*i)%p;
+				}
+				long ans1=(power(ans,p-2,p))%p;
+				
+				//long ans2=(ans1)%p;
+				//System.out.println(ans+"is ans and ans1 is "+ans1+" and ans2 is "+ans2);
+				System.out.println(p-ans1);
+			}
+			
+			t--;
+		}
+	}
+	public static long factmod(long n, long p) {
+		long res = 1;
+		while (n > 1) {
+			res = (res * (((n/p) % 2)!=0 ?  p-1 : 1)) % p;
+			for (int i = 2; i <= n%p; ++i)
+				res = (res * i) % p;
+			n /= p;
+		}
+		return res % p;
+	}
+	public static long power(long x, long y, long m)  
+    { 
+		long p1=1;
+		Stack<Integer> s1=new Stack<Integer>();
+	//	s1.add(x);
+		while(true)
+		{
+			if(y==0 || y==1)
+			{
+				s1.push(1);
+				break;
+			}
+				//s1.push((long)1%m);
+			else
+			{   
+				if(y%2==0)
+					s1.push(2);
+				else
+					s1.push(3);
+				y/=2;
+			}
+		}
+		while(!s1.isEmpty())
+		{
+			int p2=s1.pop();
+			if(p2==1)
+				p1=x;
+			else if(p2==2)
+			{
+				p1=(p1*p1)%m;
+			}
+			else
+			{
+				p1=(p1*p1)%m;
+				p1=(p1*x)%m;
+			}
+		}
+		return p1%m;
+		/*
+		 * for(long i=y;i>0;i/=2) {
+		 * 
+		 * if() }
+		 */
+
+      /*  if (y == 0) 
+            return 1; 
+          
+        
+        long p = power(x, y / 2, m) % m; 
+        p = (p * p) % m; 
+      
+        if (y % 2 == 0) 
+            return p; 
+        else
+            return (x * p) % m; 
+            } */
+    }
+}
